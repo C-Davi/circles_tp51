@@ -183,4 +183,12 @@ class User extends Model
         }
         return $user['id'];
     }
+    //退出登录
+    public function logout()
+    {
+        if (!Cache::pull(request()->userToken)){
+            throw new BaseException(['code'=>200,'msg'=>'退出登录','errorCode'=>30006]);
+        }
+        return true;
+    }
 }

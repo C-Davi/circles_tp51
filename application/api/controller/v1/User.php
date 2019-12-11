@@ -39,4 +39,10 @@ class User extends BaseController
         $token = (new UserModel())->otherlogin();
         return self::showResCode('登陆成功',['token'=>$token]);
     }
+    //退出登录
+    public function logout()
+    {
+        (new UserModel())->logout();
+        return self::showResCodeWithOutData('退出成功');
+    }
 }
