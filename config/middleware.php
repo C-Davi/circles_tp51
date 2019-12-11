@@ -14,5 +14,7 @@
 // +----------------------------------------------------------------------
 return [
     // 默认中间件命名空间
-    'default_namespace' => 'app\\http\\middleware\\',
+    'ApiUserAuth' => 'app\http\middleware\ApiUserAuth::class',//token合法性  是否登录
+    'ApiUserBindPhone' => 'app\http\middleware\ApiUserBindPhone::class',//第三方是否绑定手机
+    'ApiUserStatus' => 'app\http\middleware\ApiUserStatus::class',//用户是否禁用
 ];

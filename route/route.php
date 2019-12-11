@@ -8,13 +8,19 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
-Route::get('think', function () {
-    return 'hello,ThinkPHP5!';
+use think\facade\Route;
+//无token
+Route::group('api/:v/',function (){
+    Route::post('user/sendcode','api/:v.User/sendCode');
+    Route::post('user/phonelogin','api/:v.User/phoneLogin');
+    Route::post('user/login','api/:v.User/login');
+    Route::post('user/otherlogin','api/:v.User/otherLogin');
 });
+//验证token
+Route::group('api/:v/',function (){
 
-Route::get('hello/:name', 'index/hello');
+})->middleware(['ApiUserAuth']);
+//验证token，是否绑定手机号，是否禁用，按顺序
+Route::group('api/:v/',function (){
 
-return [
-
-];
+})->middleware(['ApiUserAuth','ApiUserBindPhone','ApiUserStatus']);
