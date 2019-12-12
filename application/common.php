@@ -10,3 +10,17 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+//异常类输出函数
+function TApiException($msg = '异常', $errorCode = 999, $code = 400)
+{
+    throw new \app\lib\exception\BaseException(['code'=>$code,'msg'=>$msg,'errorCode'=>$errorCode]);
+}
+//获取文件完整路径
+function getFileUrl($url ='')
+{
+    if (!$url){
+        return;
+    }else{
+        return url($url,'',false,true);
+    }
+}

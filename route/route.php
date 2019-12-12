@@ -28,5 +28,6 @@ Route::group('api/:v/',function (){
 })->middleware(['ApiUserAuth']);
 //验证token，是否绑定手机号，是否禁用，按顺序
 Route::group('api/:v/',function (){
-
+    //上传多图
+    Route::post('image/uploadmore','api/:v.Image/uploadMore');
 })->middleware(['ApiUserAuth','ApiUserBindPhone','ApiUserStatus']);
