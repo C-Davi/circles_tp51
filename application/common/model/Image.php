@@ -45,4 +45,9 @@ class Image extends Model
         if (!$file['status']) TApiException($file['data'],10000,200);
         return self::create(['url'=>$file['data'],'user_id'=>$userid]);
     }
+    //图片是否存在
+    public function isImageExist($id,$userid)
+    {
+        return $this->where('user_id',$userid)->field('id')->find($id);
+    }
 }

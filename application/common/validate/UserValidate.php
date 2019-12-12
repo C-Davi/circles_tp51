@@ -11,15 +11,29 @@ class UserValidate extends BaseValidate
      * @var array
      */	
 	protected $rule = [
-	    'phone'=>'require|mobile',
-        'code'=>'require|number|length:4|isPerfectCode',
+        'phone'=>'require|mobile',
+        'code'=>'require|number|length:4|isPefectCode',
         'username'=>'require',
         'password'=>'require|alphaDash',
         'provider'=>'require',
-        'openid' => 'require',
+        'openid'=>'require',
         'nickName'=>'require',
         'avatarUrl'=>'require',
-        'expires_in'=>'require'
+        'expires_in'=>'require',
+        'id'=>'require|integer|>:0',
+        'page'=>'require|integer|>:0',
+        'email'=>'require|email',
+        'userpic'=>'image',
+        'name'=>'require|chsDash',
+        'sex'=>'require|in:0,1,2',
+        'qg'=>'require|in:0,1,2',
+        'job'=>'require|chsAlpha',
+        'birthday'=>'require|dateFormat:Y-m-d',
+        'path'=>'require|chsDash',
+        'oldpassword'=>'require',
+        'newpassword'=>'require|alphaDash',
+        'renewpassword'=>'require|confirm:newpassword',
+        'follow_id'=>'require|integer|>:0|isUserExist'
     ];
     
     /**
@@ -38,9 +52,26 @@ class UserValidate extends BaseValidate
     ];
     //配置场景
     protected $scene = [
-        'sendCode' =>['phone'],
+        // 发送验证码
+        'sendCode'=>['phone'],
+        // 手机号登录
         'phonelogin'=>['phone','code'],
+        // 账号密码登录
         'login'=>['username','password'],
-        'otherlogin'=>['provider','openid','nickName','avatarUrl','expires_in']
+        // 第三方登录
+        'otherlogin'=>['provider','openid','nickName','avatarUrl','expires_in'],
+        'post'=>['id','page'],
+        'allpost'=>['page'],
+        'bindphone'=>['phone'],
+        'bindemail'=>['email'],
+        'bindother'=>['provider','openid','nickName','avatarUrl'],
+        'edituserpic'=>['userpic'],
+        'edituserinfo'=>['name','sex','qg','job','birthday','path'],
+        'repassword'=>['oldpassword','newpassword','renewpassword'],
+        'follow'=>['follow_id'],
+        'unfollow'=>['follow_id'],
+        'getfriends'=>['page'],
+        'getfens'=>['page'],
+        'getfollows'=>['page'],
     ];
 }

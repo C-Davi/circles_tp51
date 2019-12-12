@@ -45,9 +45,64 @@ class Post extends Model
         $imglistLength = count($params['imglist']);
         if ($imglistLength>0){
             $ImageModel = new Image();
+            $imgidarr = [];
             for ($i=0;$i<$imglistLength;$i++){
-
+                if ($ImageModel->isImageExist($params['imglist'][$i]['id'],$user_id)){
+                    $imgidarr[] = $params['imglist'][$i]['id'];
+                }
             }
+            // 发布关联
+            if(count($imgidarr)>0) $post->images()->attach($imgidarr,['create_time'=>time()]);
         }
+        return true;
+    }
+    //关联用户
+    public function user()
+    {
+        return $this->belongsTo('User');
+    }
+    //关联分享
+    public function share()
+    {
+        return $this->belongsTo('Post','share_id','id');
+    }
+    //获取文章详情
+    public function getPostDetail()
+    {
+        $param = request()->param();
+        return $this->with(
+            [
+                'user'   =>function($query){return $query->field('id,username,userpic');},
+                'images' =>function($query){return $query->field('url');},
+                'share'
+            ]
+        )->find($param['id']);
+    }
+    //根据标题搜索文章
+    public function Search()
+    {
+        $param = request()->param();
+        return $this->where('title','like','%'.$param['keyword'].'%')
+            ->with([
+                'user'   => function($query){return $query->field('id,username,userpic');},
+                'images' => function($query){return $query->field('url');},
+                'share'
+            ])
+            ->page($param['page'],10)->select();
+    }
+    //关联评论
+    public function comment()
+    {
+       return $this->hasMany('Comment');
+    }
+    //获取评论
+    public function getComment()
+    {
+        $params = request()->param();
+        return self::get($params['id'])->comment()
+            ->with([
+                'user'=>function($query){return $query->field('id,username,userpic');}
+            ])
+            ->select();
     }
 }
